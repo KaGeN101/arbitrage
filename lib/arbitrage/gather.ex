@@ -25,7 +25,7 @@ defmodule Arbitrage.Gather do
     IO.puts "Gather: #{elem(head, 0)}"
     send pid, {self, elem(head, 0)}
     updated = receive do
-      {:ok, message} -> Map.put cache, elem(head, 0), message
+      {:ok, message} -> Map.put cache, elem(head, 0), message["rates"]
     end 
     _matrix updated, tail 
   end   

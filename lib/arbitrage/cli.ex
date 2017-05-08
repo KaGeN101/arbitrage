@@ -24,8 +24,8 @@ defmodule Arbitrage.CLI do
       { [ help: true ], _, _ }
         -> :help
   
-      { _, [from, to], _ }
-        -> {from, to}
+      { _, [currency], _ }
+        -> {currency}
    
       _ -> :help
   
@@ -34,15 +34,14 @@ defmodule Arbitrage.CLI do
 
   def process (:help) do
     IO.puts """
-    usage: arbitrage <from> <to>
-      eg:  arbitrage ZAR USD
+    usage: arbitrage <currency>
+      eg:  arbitrage ZAR
     """
     System.halt(0)
   end
-  def process({from, to}) do
-    IO.puts "From: #{from}"
-    IO.puts "To: #{to}"
-    cache = Arbitrage.Gather.gather from
+  def process({currency}) do
+    IO.puts "Currency to Maximise: #{currency}"
+    cache = Arbitrage.Gather.gather currency
     IO.inspect cache 
   end
 
