@@ -42,7 +42,7 @@ defmodule Arbitrage.CLI do
   def process({from, to}) do
     IO.puts "From: #{from}"
     IO.puts "To: #{to}"
-    cache = Arbitrage.Gather.gather from, to
+    cache = Arbitrage.Gather.gather from
     IO.inspect cache 
   end
 
