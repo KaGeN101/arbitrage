@@ -2,9 +2,13 @@ defmodule Arbitrage.Gather do
 
   @base_url "http://api.fixer.io/"
 
+  # Gather all the currency conversions available in the the from table
+  # It does this asynch
   def gather(from) do
-    cache = %{from => _gather(from)["rates"]}
-    _matrix cache, Enum.to_list(cache[from]) 
+    cache = %{from => _gather(from)["rates"], currencies: []}
+    return = _matrix cache, Enum.to_list(cache[from])
+    IO.inspect return
+    return  
   end
 
   defp _gather currency do
@@ -15,7 +19,6 @@ defmodule Arbitrage.Gather do
   def async_gather do
     receive do
       {sender, currency} ->
-        data = HTTPoison.get! "#{@base_url}latest?base=#{currency}"
         send sender, {:ok, Poison.Parser.parse! HTTPoison.get!("#{@base_url}latest?base=#{currency}").body }
     end       
   end
@@ -25,8 +28,10 @@ defmodule Arbitrage.Gather do
     IO.puts "Gather: #{elem(head, 0)}"
     send pid, {self, elem(head, 0)}
     updated = receive do
-      {:ok, message} -> Map.put cache, elem(head, 0), message["rates"]
+      {:ok, message} -> 
+        Map.put(cache, elem(head, 0), message["rates"])
     end 
+    updated = Map.put updated, :currencies, updated[:currencies] ++ [elem(head, 0)]
     _matrix updated, tail 
   end   
   defp _matrix(cache, []), do: cache
