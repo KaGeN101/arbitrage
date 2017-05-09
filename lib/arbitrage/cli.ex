@@ -42,7 +42,14 @@ defmodule Arbitrage.CLI do
   def process({currency}) do
     IO.puts "Currency to Maximise: #{currency}"
     cache = Arbitrage.Gather.gather currency
-    IO.inspect cache 
+    IO.puts '=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
+    result = Arbitrage.Normalise.run currency, cache
+    IO.inspect result
+    IO.puts '##########################################################'    
+    best = Aribitrage.Maximise.get result
+    IO.puts "Profit: #{best[:arbitrage] - 1000}"
+    IO.puts "Currency: #{currency}"
+    IO.puts "Path: #{best[:path]}" 
   end
 
 end
