@@ -46,10 +46,10 @@ defmodule Arbitrage.CLI do
     result = Arbitrage.Normalise.run currency, cache
     IO.inspect result
     IO.puts '##########################################################'    
-    best = Aribitrage.Maximise.get result
-    IO.puts "Profit: #{best[:arbitrage] - 1000}"
+    best = Arbitrage.Maximise.get result
     IO.puts "Currency: #{currency}"
-    IO.puts "Path: #{best[:path]}" 
+    IO.puts "Profit: #{best[:arbitraged] - 1000.0}"
+    IO.puts "Path: #{currency}->#{Enum.map(best[:path], &("#{&1}->"))}#{currency}" 
   end
 
 end
