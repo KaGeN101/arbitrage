@@ -41,7 +41,11 @@ defmodule Arbitrage.CLI do
   end
   def process({currency}) do
     IO.puts "Currency to Maximise: #{currency}"
-    cache = Arbitrage.Gather.gather currency
+    _process currency, Arbitrage.Gather.gather currency
+  end
+
+  defp _process(_currency, cache) when cache == :ok, do: System.halt(0)
+  defp _process(currency, cache) do
     IO.puts '=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-'
     result = Arbitrage.Normalise.run currency, cache
     IO.inspect result
