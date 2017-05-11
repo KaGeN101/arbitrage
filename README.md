@@ -51,4 +51,10 @@ mix run -e 'Arbitrage.CLI.run(["CURRENCY"])'
 ```
 Replace CURRENCY with any 3 character currency on fixer.io, e.g: ZAR, USD, GBP etc etc
 
+#### Tests
+```
+mix test
+```
+
+
 
